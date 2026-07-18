@@ -8,31 +8,20 @@
         .container { background: #161b22; padding: 25px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #30363d; }
         h2 { color: #58a6ff; text-align: center; }
         input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #30363d; background: #0d1117; color: #fff; box-sizing: border-box; }
-        .payment { background: #1f242c; padding: 10px; border-radius: 6px; margin: 10px 0; font-size: 13px; color: #8b949e; }
         button { background: #238636; color: white; padding: 12px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <h2>💎 Sigma Diamond Shop</h2>
-    
     <input type="text" id="uid" placeholder="Enter User ID">
     <input type="text" id="zone" placeholder="Enter Zone ID">
-    
     <select id="pkg">
         <option value="86 Dia">86 Diamonds</option>
         <option value="172 Dia">172 Diamonds</option>
         <option value="Weekly Pass">Weekly Pass</option>
         <option value="2x Pack">2x Pack</option>
     </select>
-
-    <div class="payment">
-        💳 <b>Payment Methods:</b><br>
-        KBZ Pay: 09xxxxxxxxx<br>
-        Wave Pay: 09xxxxxxxxx
-    </div>
-
     <input type="text" id="phone" placeholder="Your Phone Number">
     <button onclick="sendOrder()">Order တင်မည်</button>
 </div>
@@ -46,19 +35,11 @@
         let zone = document.getElementById('zone').value;
         let pkg = document.getElementById('pkg').value;
         let phone = document.getElementById('phone').value;
+        if(!uid || !phone) return alert("အချက်အလက်တွေ ဖြည့်ပေးပါ");
 
-        if(!uid || !phone) return alert("အချက်အလက်တွေ အပြည့်အစုံ ဖြည့်ပေးပါ မောင်");
-
-        let text = `💎 *New Diamond Order*%0A%0A` +
-                   `👤 UID: ${uid}%0A` +
-                   `📍 Zone: ${zone}%0A` +
-                   `💰 Pkg: ${pkg}%0A` +
-                   `📞 Phone: ${phone}`;
-
-        try {
-            await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${text}&parse_mode=Markdown`);
-            alert("Order တင်တာ အောင်မြင်ပါတယ်!");
-        } catch(e) { alert("Error ဖြစ်သွားပါတယ်..."); }
+        let text = `💎 *New Order*%0AUID: ${uid}%0AZone: ${zone}%0APkg: ${pkg}%0APhone: ${phone}`;
+        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${text}&parse_mode=Markdown`);
+        alert("Order တင်တာ အောင်မြင်ပါတယ်!");
     }
 </script>
 </body>
