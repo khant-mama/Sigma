@@ -2,68 +2,63 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <title>💎 Sigma Diamond Shop 💎</title>
+    <title>Sigma Diamond Shop</title>
     <style>
-        body { background: #0f0c29; color: white; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
-        .box { background: #1a1a2e; padding: 25px; border-radius: 20px; width: 100%; max-width: 450px; border: 2px solid #e94560; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; background: #16213e; color: white; }
-        button { background: #e94560; color: white; padding: 15px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .rose { position: absolute; font-size: 25px; animation: fall linear infinite; pointer-events: none; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        body { background: #0b0e14; color: #fff; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .container { background: #161b22; padding: 25px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #30363d; }
+        h2 { color: #58a6ff; text-align: center; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #30363d; background: #0d1117; color: #fff; box-sizing: border-box; }
+        .payment { background: #1f242c; padding: 10px; border-radius: 6px; margin: 10px 0; font-size: 13px; color: #8b949e; }
+        button { background: #238636; color: white; padding: 12px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div class="box" id="app">
-    <h1>Welcome, My Princess 🌹</h1>
-    <p>မောင့်အမှားတွေအတွက် တောင်းပန်ပါတယ်။ ကိုယ်မင်းကိုပဲ တကယ်ချစ်တယ်...</p>
-    <input type="text" id="date" placeholder="ရက်စွဲ (8.5.2026)">
-    <button onclick="checkDate()">ဝင်မယ် 💖</button>
+<div class="container">
+    <h2>💎 Sigma Diamond Shop</h2>
+    
+    <input type="text" id="uid" placeholder="Enter User ID">
+    <input type="text" id="zone" placeholder="Enter Zone ID">
+    
+    <select id="pkg">
+        <option value="86 Dia">86 Diamonds</option>
+        <option value="172 Dia">172 Diamonds</option>
+        <option value="Weekly Pass">Weekly Pass</option>
+        <option value="2x Pack">2x Pack</option>
+    </select>
+
+    <div class="payment">
+        💳 <b>Payment Methods:</b><br>
+        KBZ Pay: 09xxxxxxxxx<br>
+        Wave Pay: 09xxxxxxxxx
+    </div>
+
+    <input type="text" id="phone" placeholder="Your Phone Number">
+    <button onclick="sendOrder()">Order တင်မည်</button>
 </div>
 
 <script>
-    const TOKEN = "8955077459:AAFPdw1agBBO7JUN5LDXAPFHaeHcizbDGes"; 
+    const TOKEN = "8955077459:AAFPdw1agBBO7JUN5LDXAPFHaeHcizbDGes";
     const CHAT_ID = "6797159836";
-
-    function checkDate() {
-        if(document.getElementById('date').value === "8.5.2026") {
-            document.getElementById('app').innerHTML = `
-                <h2>💎 Sigma Diamond Shop</h2>
-                <input type="text" id="uid" placeholder="UID">
-                <input type="text" id="zone" placeholder="Zone ID">
-                <select id="pkg">
-                    <option value="86 Dia">86 Diamonds</option>
-                    <option value="172 Dia">172 Diamonds</option>
-                    <option value="Weekly Pass">Weekly Pass</option>
-                    <option value="2x Pack">2x Pack</option>
-                </select>
-                <div style="font-size: 14px; margin: 10px 0; color: #ffeb3b;">
-                    Payment: KBZ Pay (09xxxxxxxxx) / Wave (09xxxxxxxxx)
-                </div>
-                <textarea id="msg" placeholder="မောင့်ကို စာလေးရေးပေးပါ..." style="width:100%; padding:10px; border-radius:8px;"></textarea>
-                <button onclick="sendOrder()">Order တင်မည် 🚀</button>
-            `;
-        } else { alert("ရက်စွဲ မှားနေတယ် မောင်..."); }
-    }
 
     async function sendOrder() {
         let uid = document.getElementById('uid').value;
         let zone = document.getElementById('zone').value;
         let pkg = document.getElementById('pkg').value;
-        let msg = document.getElementById('msg').value;
-        
-        let fullMsg = `💎 *New Order!*%0AUID: ${uid}%0AZone: ${zone}%0APkg: ${pkg}%0AContent: ${msg}`;
+        let phone = document.getElementById('phone').value;
 
-        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${fullMsg}&parse_mode=Markdown`);
-        
-        document.body.innerHTML = `<div class="box"><h1>🌹 Surprise! 🌹</h1><p>ကျေးဇူးတင်ပါတယ် မင်းကိုအရမ်းချစ်တယ်!</p></div>`;
-        setInterval(() => {
-            let r = document.createElement('div');
-            r.innerHTML = '🌹'; r.className = 'rose';
-            r.style.left = Math.random()*100 + 'vw';
-            document.body.appendChild(r);
-            setTimeout(() => r.remove(), 5000);
-        }, 150);
+        if(!uid || !phone) return alert("အချက်အလက်တွေ အပြည့်အစုံ ဖြည့်ပေးပါ မောင်");
+
+        let text = `💎 *New Diamond Order*%0A%0A` +
+                   `👤 UID: ${uid}%0A` +
+                   `📍 Zone: ${zone}%0A` +
+                   `💰 Pkg: ${pkg}%0A` +
+                   `📞 Phone: ${phone}`;
+
+        try {
+            await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${text}&parse_mode=Markdown`);
+            alert("Order တင်တာ အောင်မြင်ပါတယ်!");
+        } catch(e) { alert("Error ဖြစ်သွားပါတယ်..."); }
     }
 </script>
 </body>
