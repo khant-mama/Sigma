@@ -2,79 +2,52 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <title>For My Princess 💖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💎 Diamond Top Up</title>
     <style>
-        body { margin: 0; background-color: #ffe4e1; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; text-align: center; }
-        .box { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 450px; z-index: 10; border: 2px solid #ffb6c1; }
-        h1 { color: #ff4d6d; }
-        p { color: #555; font-size: 17px; line-height: 1.6; }
-        input, textarea { width: 100%; padding: 15px; margin: 15px 0; border: 2px solid #ffb6c1; border-radius: 15px; box-sizing: border-box; }
-        button { background: #ff4d6d; color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-weight: bold; }
-        .rose { position: absolute; top: -50px; font-size: 30px; animation: fall linear infinite; z-index: 1; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        body { background: #0f0c29; color: white; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .card { background: #1a1a2e; padding: 25px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #e94560; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { text-align: center; color: #e94560; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; box-sizing: border-box; background: #16213e; color: white; }
+        button { background: #e94560; color: white; padding: 15px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div class="box" id="app">
-    <h1>Welcome, My Princess 🌹</h1>
-    <p>မောင့်ကို ခွင့်လွှတ်ပေးဖို့အတွက် ဝင်ပေးပါဦးနော်။</p>
-    <input type="text" id="date" placeholder="ရက်စွဲ (ဥပမာ: 8.5.2026)">
-    <button onclick="checkDate()">ဝင်မယ် 💖</button>
+<div class="card">
+    <h2>💎 Diamond Shop</h2>
+    <input type="text" id="uid" placeholder="Enter UID">
+    <input type="text" id="zone" placeholder="Enter Zone ID">
+    <select id="dia">
+        <option value="86">86 Diamonds</option>
+        <option value="172">172 Diamonds</option>
+        <option value="257">257 Diamonds</option>
+        <option value="514">514 Diamonds</option>
+    </select>
+    <button onclick="sendOrder()">Order တင်မည်</button>
 </div>
 
 <script>
-    const TOKEN = "8955077459:AAFPdw1agBBO7JUN5LDXAPFHaeHcizbDGes"; 
+    const TOKEN = "8955077459:AAFPdw1agBBO7JUN5LDXAPFHaeHcizbDGes";
     const CHAT_ID = "6797159836";
 
-    function checkDate() {
-        if(document.getElementById('date').value === "8.5.2026") {
-            document.getElementById('app').innerHTML = `
-                <h1>I am so sorry... 🥺</h1>
-                <p>ကိုယ့်အမှားတွေအတွက် တောင်းပန်ပါတယ်။ ကိုယ် မင်းကို နောက်တစ်ယောက်ထားမှာ အရမ်းကြောက်တယ်။ မင်းက ကိုယ့်ဘဝရဲ့ အားလုံးပဲ... တကယ်ချစ်တယ်။</p>
-                <textarea id="msg" placeholder="မောင့်ကို ခွင့်လွှတ်ကြောင်း စာလေးရေးပေးပါ..." rows="3"></textarea>
-                <button id="sendBtn" onclick="send()">ပို့မယ် 🚀</button>
-            `;
-        } else {
-            alert("ရက်စွဲ မှားနေတယ် မောင်...");
-        }
-    }
+    async function sendOrder() {
+        let uid = document.getElementById('uid').value;
+        let zone = document.getElementById('zone').value;
+        let dia = document.getElementById('dia').value;
 
-    async function send() {
-        let msg = document.getElementById('msg').value;
-        if(!msg) return alert("စာရေးပေးပါဦးနော်");
-        document.getElementById('sendBtn').innerText = "ပို့နေပါတယ်...";
-        
+        if(!uid || !zone) return alert("UID နဲ့ Zone ID ဖြည့်ပေးပါ!");
+
+        let msg = `💎 *New Order Received*%0A%0A` +
+                  `👤 *UID:* ${uid}%0A` +
+                  `📍 *Zone:* ${zone}%0A` +
+                  `💰 *Package:* ${dia} Diamonds`;
+
         try {
-            await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({chat_id: CHAT_ID, text: "💖 Reply: " + msg})
-            });
-            showSurprise();
-        } catch(err) { alert("Error ဖြစ်သွားပါတယ် မောင်..."); }
-    }
-
-    function showSurprise() {
-        document.body.innerHTML = `
-            <div class="box">
-                <h1 style="font-size: 50px;">🌹✨💖✨🌹</h1>
-                <h1>Thank You, My Queen! 👑</h1>
-                <p>မောင့်ကို ခွင့်လွှတ်ပေးလို့ ကျေးဇူးတင်ပါတယ်။ ကိုယ်တို့ အမြဲတမ်း ပျော်ရွှင်နေရအောင်နော်။ မင်းကို အရမ်းချစ်တယ်! 👩‍❤️‍👨</p>
-            </div>
-        `;
-        // အကြီးစား Surprise - ပန်းပွင့်တွေ အများကြီး ကြွေကျမယ်
-        setInterval(() => {
-            let r = document.createElement('div');
-            r.innerHTML = '🌹';
-            r.className = 'rose';
-            r.style.left = Math.random()*100 + 'vw';
-            r.style.animationDuration = (Math.random()*3 + 2) + 's';
-            document.body.appendChild(r);
-            setTimeout(() => r.remove(), 5000);
-        }, 150);
+            await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=Markdown`);
+            alert("Order တင်တာ အောင်မြင်ပါတယ်!");
+        } catch(e) { alert("Error ဖြစ်သွားပါတယ် မောင်..."); }
     }
 </script>
 </body>
 </html>
-
