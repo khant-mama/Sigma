@@ -2,51 +2,68 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💎 Diamond Top Up</title>
+    <title>💎 Sigma Diamond Shop 💎</title>
     <style>
         body { background: #0f0c29; color: white; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
-        .card { background: #1a1a2e; padding: 25px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #e94560; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { text-align: center; color: #e94560; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; box-sizing: border-box; background: #16213e; color: white; }
+        .box { background: #1a1a2e; padding: 25px; border-radius: 20px; width: 100%; max-width: 450px; border: 2px solid #e94560; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; background: #16213e; color: white; }
         button { background: #e94560; color: white; padding: 15px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .rose { position: absolute; font-size: 25px; animation: fall linear infinite; pointer-events: none; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>💎 Diamond Shop</h2>
-    <input type="text" id="uid" placeholder="Enter UID">
-    <input type="text" id="zone" placeholder="Enter Zone ID">
-    <select id="dia">
-        <option value="86">86 Diamonds</option>
-        <option value="172">172 Diamonds</option>
-        <option value="257">257 Diamonds</option>
-        <option value="514">514 Diamonds</option>
-    </select>
-    <button onclick="sendOrder()">Order တင်မည်</button>
+<div class="box" id="app">
+    <h1>Welcome, My Princess 🌹</h1>
+    <p>မောင့်အမှားတွေအတွက် တောင်းပန်ပါတယ်။ ကိုယ်မင်းကိုပဲ တကယ်ချစ်တယ်...</p>
+    <input type="text" id="date" placeholder="ရက်စွဲ (8.5.2026)">
+    <button onclick="checkDate()">ဝင်မယ် 💖</button>
 </div>
 
 <script>
-    const TOKEN = "8955077459:AAFPdw1agBBO7JUN5LDXAPFHaeHcizbDGes";
-    const CHAT_ID = "6797159836";
+    const TOKEN = "မောင့် BOT TOKEN ထည့်ပါ"; 
+    const CHAT_ID = "မောင့် CHAT ID ထည့်ပါ";
+
+    function checkDate() {
+        if(document.getElementById('date').value === "8.5.2026") {
+            document.getElementById('app').innerHTML = `
+                <h2>💎 Sigma Diamond Shop</h2>
+                <input type="text" id="uid" placeholder="UID">
+                <input type="text" id="zone" placeholder="Zone ID">
+                <select id="pkg">
+                    <option value="86 Dia">86 Diamonds</option>
+                    <option value="172 Dia">172 Diamonds</option>
+                    <option value="Weekly Pass">Weekly Pass</option>
+                    <option value="2x Pack">2x Pack</option>
+                </select>
+                <div style="font-size: 14px; margin: 10px 0; color: #ffeb3b;">
+                    Payment: KBZ Pay (09xxxxxxxxx) / Wave (09xxxxxxxxx)
+                </div>
+                <textarea id="msg" placeholder="မောင့်ကို စာလေးရေးပေးပါ..." style="width:100%; padding:10px; border-radius:8px;"></textarea>
+                <button onclick="sendOrder()">Order တင်မည် 🚀</button>
+            `;
+        } else { alert("ရက်စွဲ မှားနေတယ် မောင်..."); }
+    }
 
     async function sendOrder() {
         let uid = document.getElementById('uid').value;
         let zone = document.getElementById('zone').value;
-        let dia = document.getElementById('dia').value;
+        let pkg = document.getElementById('pkg').value;
+        let msg = document.getElementById('msg').value;
+        
+        let fullMsg = `💎 *New Order!*%0AUID: ${uid}%0AZone: ${zone}%0APkg: ${pkg}%0AContent: ${msg}`;
 
-        if(!uid || !zone) return alert("UID နဲ့ Zone ID ဖြည့်ပေးပါ!");
-
-        let msg = `💎 *New Order Received*%0A%0A` +
-                  `👤 *UID:* ${uid}%0A` +
-                  `📍 *Zone:* ${zone}%0A` +
-                  `💰 *Package:* ${dia} Diamonds`;
-
-        try {
-            await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=Markdown`);
-            alert("Order တင်တာ အောင်မြင်ပါတယ်!");
-        } catch(e) { alert("Error ဖြစ်သွားပါတယ် မောင်..."); }
+        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${fullMsg}&parse_mode=Markdown`);
+        
+        document.body.innerHTML = `<div class="box"><h1>🌹 Surprise! 🌹</h1><p>ကျေးဇူးတင်ပါတယ် မင်းကိုအရမ်းချစ်တယ်!</p></div>`;
+        setInterval(() => {
+            let r = document.createElement('div');
+            r.innerHTML = '🌹'; r.className = 'rose';
+            r.style.left = Math.random()*100 + 'vw';
+            document.body.appendChild(r);
+            setTimeout(() => r.remove(), 5000);
+        }, 150);
     }
 </script>
 </body>
